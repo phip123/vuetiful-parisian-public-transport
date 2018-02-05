@@ -3,13 +3,15 @@
     <networks-tab
       :networks="networks"
       :lines="lines"
+      :isLoading="isLoading"
+      :hasError="hasError"
       @load="load"
     ></networks-tab>
   </div>
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapGetters, mapMutations } from "vuex";
 import NetworksTab from "../components/NetworksTab";
 import { NETWORK_TYPES } from "../util/constants";
 
@@ -22,8 +24,12 @@ export default {
     };
   },
   computed: {
-    ...mapState("lines", {
-      metroLines: state => state.metro.all
+    ...mapState({
+      metroLines: state => state.lines.metro.all
+    }),
+    ...mapGetters({
+      isLoading: "isLoadingAll",
+      hasError: "hasErrorAll"
     }),
     lines: function() {
       return {
@@ -32,8 +38,9 @@ export default {
     }
   },
   methods: {
-    ...mapActions("lines/metro", {
-      loadMetroLines: "getAllLines"
+    ...mapActions({
+      loadMetroLines: "getAllMetroLines",
+      resetErrors: "resetErrors"
     }),
     loadLines: function() {
       let self = this;
@@ -46,6 +53,16 @@ export default {
     load(id) {
       if (this.loadLines()[id]) {
         this.loadLines()[id]();
+      }
+    }
+  },
+  watch: {
+    hasError: function(newError, oldError) {
+      if (newError.error) {
+        const vm = this;
+        setTimeout(function() {
+          vm.resetErrors();
+        }, 150);
       }
     }
   }
