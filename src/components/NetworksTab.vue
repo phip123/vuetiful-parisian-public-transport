@@ -1,6 +1,6 @@
 <template>
   <section>
-    <b-tabs @change="load" position="is-centered" class="block" v-model="activeTab">
+    <b-tabs @change="load" position="is-centered" class="block is-primary" v-model="activeTab">
       <b-tab-item  v-for="network in networks" :key="network.id" :label="network.name">
         <line-list v-show="!isLoading" :lines="lines[network.id]"></line-list>
         <p v-if="!lines[network.id] || lines[network.id].length === 0">Can't find any lines for {{network.name}}</p>
