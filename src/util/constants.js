@@ -8,3 +8,5 @@ export const TRAM = new Network("tram", "Tram");
 export const NETWORK_TYPES = [METRO, BUS, RER, TRAM];
 
 export const LINE_API = "http://restratpws.azurewebsites.net/api/Lines";
+
+export const IMAGE_URL = "http://restratpws.azurewebsites.net/api/images";
