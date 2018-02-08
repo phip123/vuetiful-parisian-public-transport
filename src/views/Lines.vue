@@ -7,6 +7,7 @@
       :hasError="hasError"
       @load="load"
     ></networks-tab>
+    <b-loading v-if="isLoading" :active="isLoading" :canCancel="false"></b-loading>
   </div>
 </template>
 
@@ -25,7 +26,10 @@ export default {
   },
   computed: {
     ...mapState({
-      metroLines: state => state.lines.metro.all
+      metroLines: state => state.lines.metro.all,
+      busLines: state => state.lines.bus.all,
+      tramLines: state => state.lines.tram.all,
+      rerLines: state => state.lines.rer.all
     }),
     ...mapGetters({
       isLoading: "isLoadingAll",
@@ -33,13 +37,19 @@ export default {
     }),
     lines: function() {
       return {
-        metro: this.metroLines
+        metro: this.metroLines,
+        bus: this.busLines,
+        tram: this.tramLines,
+        rer: this.rerLines
       };
     }
   },
   methods: {
     ...mapActions({
       loadMetroLines: "getAllMetroLines",
+      loadBusLines: "getAllBusLines",
+      loadTramLines: "getAllTramLines",
+      loadRerLines: "getAllRerLines",
       resetErrors: "resetErrors"
     }),
     loadLines: function() {
@@ -47,6 +57,15 @@ export default {
       return {
         metro: function() {
           self.loadMetroLines();
+        },
+        bus: function() {
+          self.loadBusLines();
+        },
+        tram: function() {
+          self.loadTramLines();
+        },
+        rer: function() {
+          self.loadRerLines();
         }
       };
     },

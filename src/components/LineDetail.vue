@@ -7,13 +7,13 @@
             <img :src="imageUrl">
           </figure>
         </div>
-        <div class="media-content">
-          <p class="title is-4">{{line.shortName}}</p>
+        <div>
+          <p class="title is-5">{{line.shortName}}</p>
         </div>
       </div>
       <a class="card-header-icon">
         <b-icon
-          :icon="props.open ? 'menu-down' : 'menu-up'">
+          :icon="props.open ? 'menu-up' : 'menu-down'">
         </b-icon>
       </a>
     </div>

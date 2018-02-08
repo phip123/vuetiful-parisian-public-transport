@@ -3,8 +3,7 @@
     <b-tabs @change="load" position="is-centered" class="block is-primary" v-model="activeTab">
       <b-tab-item  v-for="network in networks" :key="network.id" :label="network.name">
         <line-list v-show="!isLoading" :lines="lines[network.id]"></line-list>
-        <p v-if="!lines[network.id] || lines[network.id].length === 0">Can't find any lines for {{network.name}}</p>
-        <b-loading v-show="isLoading" :active.sync="isLoading" :canCancel="false"></b-loading>
+        <p v-if="!isLoading && (!lines[network.id] || lines[network.id].length === 0)">Can't find any lines for {{network.name}}</p>
       </b-tab-item>
     </b-tabs>
   </section>

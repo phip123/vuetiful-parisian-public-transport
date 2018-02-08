@@ -1,55 +1,29 @@
 import * as types from "../mutation-types";
-import Line from "../../../../models/Line";
-import LineService from "../../../../api/LineService";
 import { METRO } from "../../../../util/constants";
+import * as fromGeneric from "./generic";
 
-const state = {
-  all: [],
-  errorAll: { text: "", error: false },
-  loadingAll: false
+const options = {
+  network: METRO,
+  receive: types.RECEIVE_LINES_FOR_METRO,
+  receiveSuccess: types.RECEIVE_LINES_FOR_METRO_SUCCESS,
+  receiveFail: types.RECEIVE_LINES_FOR_METRO_FAIL
 };
 
-const getters = {};
+const totalMetros = state => fromGeneric.totalAll(state);
+const getAllMetroLines = ({ commit, state }) =>
+  fromGeneric.getAll(commit, state, options);
 
-const actions = {
-  async getAllMetroLines({ commit }) {
-    commit(types.RECEIVE_LINES_FOR_METRO);
-    try {
-      const lines = await LineService.getLinesForNetwork(METRO);
-      if (lines.status === 200) {
-        commit(types.RECEIVE_LINES_FOR_METRO_SUCCESS, lines.data);
-      } else {
-        commit(types.RECEIVE_LINES_FOR_METRO_FAIL);
-      }
-    } catch (ex) {
-      commit(types.RECEIVE_LINES_FOR_METRO_FAIL);
-    }
-  }
-};
+const state = {};
 
-const mutations = {
-  [types.RECEIVE_LINES_FOR_METRO](state) {
-    state.loadingAll = true;
-  },
+const getters = { totalMetros };
 
-  [types.RECEIVE_LINES_FOR_METRO_SUCCESS](state, lines) {
-    state.all = lines;
-    state.loadingAll = false;
-  },
+const actions = { getAllMetroLines };
 
-  [types.RECEIVE_LINES_FOR_METRO_FAIL](state) {
-    state.errorAll = { error: true, text: "Failed loading all metro lines" };
-    state.loadingAll = false;
-  },
-
-  [types.RESET_ERROR](state) {
-    state.errorAll = { error: false, text: "" };
-  }
-};
+const mutations = {};
 
 export default {
-  state,
+  state: Object.assign(fromGeneric.genericState, state),
   getters,
   actions,
-  mutations
+  mutations: Object.assign(fromGeneric.genericMutations(options), mutations)
 };
