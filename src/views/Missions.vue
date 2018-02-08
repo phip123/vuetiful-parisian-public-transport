@@ -1,10 +1,12 @@
 <template>
-    <h1>Directions</h1>
+  <div>
+    dd
+  </div>
 </template>
 
 <script>
 export default {
-  name: "directions"
+  name: "missions"
 };
 </script>
 

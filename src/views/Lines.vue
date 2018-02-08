@@ -1,11 +1,10 @@
 <template>
   <div>
     <networks-tab
-      :networks="networks"
-      :lines="lines"
-      :isLoading="isLoading"
-      :hasError="hasError"
-      @load="load"
+    :networks="networks"
+    :lines="lines"
+    :isLoading="isLoading"
+    @load="load"
     ></networks-tab>
     <b-loading v-if="isLoading" :active="isLoading" :canCancel="false"></b-loading>
   </div>
@@ -50,6 +49,7 @@ export default {
       loadBusLines: "getAllBusLines",
       loadTramLines: "getAllTramLines",
       loadRerLines: "getAllRerLines",
+      loadStationsForLine: "getStationsForLine",
       resetErrors: "resetErrors"
     }),
     loadLines: function() {
@@ -73,15 +73,32 @@ export default {
       if (this.loadLines()[id]) {
         this.loadLines()[id]();
       }
+    },
+    danger(text) {
+      const vm = this;
+      this.$snackbar.open({
+        duration: 2500,
+        message: text,
+        type: "is-danger",
+        position: "is-bottom-left",
+        actionText: "Retry loading",
+        onAction: () => {
+          vm.load(vm.activeTab);
+        }
+      });
     }
   },
   watch: {
     hasError: function(newError, oldError) {
       if (newError.error) {
-        const vm = this;
-        setTimeout(function() {
-          vm.resetErrors();
-        }, 150);
+        danger(this.hasError.text);
+        this.resetErrors();
+      }
+    },
+    hasErrorStations: function(newError, oldError) {
+      if (newError.error) {
+        danger(this.hasErrorStations.text);
+        this.resetErrors();
       }
     }
   }

@@ -2,9 +2,9 @@
   <div id="app">
     <div id="nav">
       <router-link to="/">Home</router-link> |
-      <router-link to="/directions">Directions</router-link>
+      <router-link to="/missions">Missions</router-link>
       <router-link to="/lines">Lines</router-link>
-      <router-link to="/stations">Stations</router-link>
+      <router-link :class="[$route.fullPath.includes('stations') ? 'router-link-exact-active': '' ]" to="/stations">Stations</router-link>
     </div>
     <router-view/>
   </div>

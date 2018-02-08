@@ -27,15 +27,6 @@ export default {
     isLoading: {
       type: Boolean,
       default: () => false
-    },
-    hasError: {
-      type: Object,
-      default: () => {
-        return {
-          error: false,
-          text: ""
-        };
-      }
     }
   },
   data() {
@@ -49,26 +40,6 @@ export default {
   methods: {
     load: function(index) {
       this.$emit("load", this.networks[index].id);
-    },
-    danger() {
-      const vm = this;
-      this.$snackbar.open({
-        duration: 2500,
-        message: vm.hasError.text,
-        type: "is-danger",
-        position: "is-bottom-left",
-        actionText: "Retry loading",
-        onAction: () => {
-          vm.load(vm.activeTab);
-        }
-      });
-    }
-  },
-  watch: {
-    hasError: function(newError, oldError) {
-      if (newError.error) {
-        this.danger();
-      }
     }
   }
 };
